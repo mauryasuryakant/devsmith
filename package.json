@@ -1,0 +1,15 @@
+{
+  "name": "@mauryasuryakant/devsmith",
+  "version": "0.1.0",
+  "description": "A lightweight developer project intelligence CLI",
+  "main": "cli.js",
+  "bin": {
+    "devsmith": "./cli.js"
+  },
+  "keywords": [
+    "developer-tools",
+    "cli",
+    "devtools"
+  ],
+  "license": "MIT"
+}
