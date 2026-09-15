@@ -1,6 +1,6 @@
 {
   "name": "@mauryasuryakant/devsmith",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A lightweight developer project intelligence CLI",
   "bin": {
     "devsmith": "./bin/devsmith.js"
