@@ -1,2 +1,0 @@
-﻿# devsmith
-A lightweight developer project intelligence CLI
