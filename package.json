@@ -1,20 +1,11 @@
 {
   "name": "@mauryasuryakant/devsmith",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight developer project intelligence CLI",
-  "homepage": "https://github.com/mauryasuryakant/devsmith#readme",
-  "bugs": {
-    "url": "https://github.com/mauryasuryakant/devsmith/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mauryasuryakant/devsmith.git"
-  },
-  "license": "MIT",
-  "author": "Maurya Suryakant",
   "type": "module",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  "bin": {
+    "devsmith": "./index.js"
+  },
+  "license": "MIT"
 }
