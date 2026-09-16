@@ -86,6 +86,7 @@ function detectStack(files) {
   const stack = new Set();
 
   for (const file of files) {
+    const name = path.basename(file);
     const ext = path.extname(file);
 
     if (ext === ".js" || ext === ".jsx") stack.add("JavaScript");
@@ -96,10 +97,45 @@ function detectStack(files) {
     if (ext === ".rs") stack.add("Rust");
     if (ext === ".cpp" || ext === ".cc" || ext === ".h") stack.add("C++");
 
-    if (path.basename(file) === "package.json") stack.add("Node.js");
-    if (path.basename(file) === "go.mod") stack.add("Go");
-    if (path.basename(file) === "pom.xml") stack.add("Java / Maven");
-    if (path.basename(file) === "requirements.txt") stack.add("Python");
+    if (name === "package.json") {
+      stack.add("Node.js");
+
+      try {
+        const packageJson = JSON.parse(
+          fs.readFileSync(file, "utf8")
+        );
+
+        const dependencies = {
+          ...packageJson.dependencies,
+          ...packageJson.devDependencies,
+        };
+
+        const frameworks = {
+          react: "React",
+          next: "Next.js",
+          express: "Express",
+          fastify: "Fastify",
+          vue: "Vue",
+          angular: "Angular",
+          svelte: "Svelte",
+          vite: "Vite",
+          tailwindcss: "Tailwind CSS",
+          typescript: "TypeScript",
+        };
+
+        for (const dependency of Object.keys(dependencies)) {
+          if (frameworks[dependency]) {
+            stack.add(frameworks[dependency]);
+          }
+        }
+      } catch {
+        // Ignore invalid package.json
+      }
+    }
+
+    if (name === "go.mod") stack.add("Go");
+    if (name === "pom.xml") stack.add("Java / Maven");
+    if (name === "requirements.txt") stack.add("Python");
   }
 
   return [...stack];
@@ -115,24 +151,21 @@ function context() {
   const stack = detectStack(files);
   const projectName = path.basename(root);
 
-  const memory = `# DevSmith Memory
+  let memory = fs.readFileSync(memoryFile, "utf8");
 
-## Project
-- Name: ${projectName}
-- Description: unknown
+  memory = memory.replace(
+    /- Name: .*/,
+    `- Name: ${projectName}`
+  );
 
-## Stack
-${stack.length ? stack.map((item) => `- ${item}`).join("\n") : "- Not detected yet."}
+  if (stack.length > 0) {
+    const stackSection = stack.map((item) => `- ${item}`).join("\n");
 
-## Architecture
-- Not detected yet.
-
-## Decisions
-- None yet.
-
-## Conventions
-- None yet.
-`;
+    memory = memory.replace(
+      /## Stack\n[\s\S]*?(?=\n## Architecture)/,
+      `## Stack\n${stackSection}\n`
+    );
+  }
 
   fs.writeFileSync(memoryFile, memory);
 

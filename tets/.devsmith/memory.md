@@ -5,7 +5,11 @@
 - Description: unknown
 
 ## Stack
-- Not detected yet.
+- Node.js
+- Express
+- Vite
+- TypeScript
+- JavaScript
 
 ## Architecture
 - Not detected yet.
